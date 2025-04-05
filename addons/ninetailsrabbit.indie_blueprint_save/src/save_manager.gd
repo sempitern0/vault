@@ -25,11 +25,15 @@ func _notification(what: int) -> void:
 		
 		
 func _ready() -> void:
-	list_of_saved_games.merge(read_user_saved_games(), true)
+	update_saved_games_list()
 
 
 func make_current(saved_game: IndieBlueprintSavedGame) -> void:
 	current_saved_game = saved_game
+
+
+func update_saved_games_list() -> void:
+	list_of_saved_games.merge(read_user_saved_games(), true)
 
 
 func create_new_save(filename: String, make_it_as_current: bool = false):
