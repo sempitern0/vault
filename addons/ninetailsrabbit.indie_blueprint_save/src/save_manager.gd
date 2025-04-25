@@ -7,8 +7,7 @@ signal error_creating_savegame(filename: String, error: Error)
 signal error_loading_savegame(filename: String, error: Error)
 signal error_removing_savegame(filename: String, error: Error)
 
-## Dictionary<string, IndieBlueprintSavedGame>
-@export var list_of_saved_games: Dictionary = {}
+@export var list_of_saved_games: Dictionary[String, IndieBlueprintSavedGame] = {}
 @export var current_saved_game: IndieBlueprintSavedGame:
 	set(value):
 		if value != current_saved_game:
