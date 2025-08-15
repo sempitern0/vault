@@ -19,9 +19,10 @@ static var PluginDebugDirectoryPath = "res://debug"
 ##PluginSettingsBasePath + "/update_notification_enabled"
 #endregion
 
+
+
 ## Enable to test the updater without need to have a latest release version to trigger it
 static var DebugMode: bool = false
-
 
 static func remove_setting(name: String) -> void:
 	if ProjectSettings.has_setting(name):
