@@ -21,8 +21,8 @@ func _notification(what: int) -> void:
 
 func _ready() -> void:
 	read_user_saved_games()
-
-		
+	
+	
 func make_current(saved_game: IndieBlueprintSavedGame) -> void:
 	current_saved_game = saved_game
 
@@ -41,8 +41,30 @@ func save_game(saved_game: IndieBlueprintSavedGame, save_mode: SaveModes = curre
 	save_strategy.save_file(saved_game)
 
 
-func update_saved_games_list() -> void:
-	pass
+func load_game(file_path: String, file_name: String, _encrypted_key: StringName = encrypted_key) -> IndieBlueprintSavedGame:
+	var save_strategy: SaveStrategy
+	save_strategy = SaveStrategyResource.new(file_path, file_name, _encrypted_key)
+	
+	var saved_game: IndieBlueprintSavedGame = save_strategy.load_file()
+	
+	if saved_game == null:
+		save_strategy = SaveStrategyJson.new(file_path, file_name, _encrypted_key)
+	
+	return save_strategy.load_file()
+
+
+func delete_game(saved_game: IndieBlueprintSavedGame) -> bool:
+	var save_strategy: SaveStrategy
+	var file_path: String = saved_game.data.core.file_path
+	var file_name: String = saved_game.data.core.file_name
+	
+	match saved_game.data.core.extension:
+		SaveModes.ResourceMode:
+			save_strategy = SaveStrategyResource.new(file_path, file_name)
+		SaveModes.JsonMode:
+			save_strategy = SaveStrategyJson.new(file_path, file_name)
+		
+	return save_strategy.delete_file()
 
 
 func read_user_saved_games(path: String = default_path, save_mode: SaveModes = current_save_mode,  _encrypted_key: StringName = encrypted_key) -> void:
@@ -51,12 +73,14 @@ func read_user_saved_games(path: String = default_path, save_mode: SaveModes = c
 	if save_directory_creation_error not in [OK, ERR_ALREADY_EXISTS]:
 		printerr(error_string(save_directory_creation_error))
 		push_error("IndieBlueprintSaveManager: An error %s with code %d happened when reading user saved games" % [error_string(save_directory_creation_error), save_directory_creation_error])
-	
+		return
+		
 	var save_directory: DirAccess = DirAccess.open(default_path)
 	var save_directory_open_error: Error = DirAccess.get_open_error()
 	
 	if save_directory_open_error != OK:
 		push_error("IndieBlueprintSaveManager: An error %s ocurred trying to open the save directory folder in path %s " % [error_string(save_directory_open_error), default_path])
+		return
 		
 	save_directory.list_dir_begin()
 	var file_name: String = save_directory.get_next()
@@ -65,17 +89,10 @@ func read_user_saved_games(path: String = default_path, save_mode: SaveModes = c
 	
 	while not file_name.is_empty():
 		if not save_directory.current_is_dir() and file_name.get_extension() in ["json", "res", "tres"]:
-			var save_strategy: SaveStrategy
-		
-			match save_mode:
-				SaveModes.ResourceMode:
-					save_strategy = SaveStrategyResource.new(path, file_name, _encrypted_key)
-				SaveModes.JsonMode:
-					save_strategy = SaveStrategyJson.new(path, file_name, _encrypted_key)
-					
-			var saved_game: IndieBlueprintSavedGame = save_strategy.load_file()
+			var saved_game: IndieBlueprintSavedGame = load_game(path, file_name, _encrypted_key)
 			
-			list_of_saved_games[saved_game.data.core.file_name] = saved_game
+			if saved_game:
+				list_of_saved_games[saved_game.data.core.file_name] = saved_game
 		
 		file_name = save_directory.get_next()
 				

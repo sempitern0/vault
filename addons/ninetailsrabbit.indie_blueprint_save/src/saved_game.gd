@@ -4,6 +4,7 @@ var data: Dictionary = {
 	"core": {
 		"file_name": "",
 		"file_path": "",
+		"extension": "",
 		"version_control": ProjectSettings.get_setting("application/config/version", "1.0.0"),
 		"engine_version": "Godot %s" % Engine.get_version_info().string,
 		"device": OS.get_distribution_name(),
@@ -25,6 +26,7 @@ func _init(file_name: String, file_path: String, save_data: Dictionary = {}, new
 	if new_save:
 		data.core.file_name = file_name
 		data.core.file_path = file_path
+		data.core.extension = file_name.get_extension()
 		data.core.creation_timestamp = Time.get_unix_time_from_system()
 		data.core.creation_date = datetime()
 		update_timestamp()
