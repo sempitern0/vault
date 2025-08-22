@@ -1,10 +1,10 @@
 <div align="center">
 	<img src="icon.svg" alt="Logo" width="160" height="160">
 
-<h3 align="center">Vaul</h3>
+<h3 align="center">Vault</h3>
 
   <p align="center">
-  This save system provides a convenient way to manage save files in your Godot project. It leverages the `VaultSavedGame` resource, which can be extended for your specific game data
+  This save system provides a convenient way to manage save files in your Godot project. It leverages the **VaultSavedGame** resource, which can be extended for your specific game data
 	<br />
 	·
 	<a href="https://github.com/sempitern0/vault/issues/new?assignees=sempitern0&labels=%F0%9F%90%9B+bug&projects=&template=bug_report.md&title=">Report Bug</a>
