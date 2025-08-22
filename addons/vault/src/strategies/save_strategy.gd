@@ -1,4 +1,4 @@
-class_name SaveStrategy extends RefCounted
+class_name VaultSaveStrategy extends RefCounted
 
 var save_file_path: String
 var save_filename: String
@@ -9,16 +9,16 @@ func _init(file_path: String, filename: String, _encrypted_key: StringName = &""
 	save_filename =  clean_filename(filename.get_basename().to_lower().strip_edges())
 	encrypted_key = _encrypted_key
 	
-	assert(not save_file_path.is_empty(), "SaveStrategy: The file path is empty")
-	assert(save_file_path.is_absolute_path(), "SaveStrategy: The file path to save is not absolute")
-	assert(DirAccess.dir_exists_absolute(save_file_path), "SaveStrategy: The file path does not exist in this system")
+	assert(not save_file_path.is_empty(), "VaultSaveStrategy: The file path is empty")
+	assert(save_file_path.is_absolute_path(), "VaultSaveStrategy: The file path to save is not absolute")
+	assert(DirAccess.dir_exists_absolute(save_file_path), "VaultSaveStrategy: The file path does not exist in this system")
 
 
-func load_file() -> IndieBlueprintSavedGame:
+func load_file() -> VaultSavedGame:
 	return null
 
 
-func save_file(saved_game: IndieBlueprintSavedGame) -> bool:
+func save_file(saved_game: VaultSavedGame) -> bool:
 	return false
 	
 

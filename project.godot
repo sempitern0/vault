@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Indie_Blueprint_Save"
+config/name="Vault"
 config/description="This save system provides a convenient way to manage save files in your Godot project. It leverages the SavedGame resource, which can be extended for your specific game data"
 config/version="1.1.0"
 config/features=PackedStringArray("4.4", "GL Compatibility")
@@ -18,11 +18,11 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-IndieBlueprintSaveManager="*res://addons/ninetailsrabbit.indie_blueprint_save/src/save_manager.gd"
+IndieBlueprintSaveManager="*res://addons/sempitern0.indie_blueprint_save/src/save_manager.gd"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/ninetailsrabbit.indie_blueprint_save/plugin.cfg")
+enabled=PackedStringArray()
 
 [rendering]
 

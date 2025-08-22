@@ -1,4 +1,4 @@
-class_name IndieBlueprintSavedGame extends RefCounted
+class_name VaultSavedGame extends RefCounted
 
 var data: Dictionary = {
 	"core": {

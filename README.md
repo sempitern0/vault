@@ -1,15 +1,15 @@
 <div align="center">
 	<img src="icon.svg" alt="Logo" width="160" height="160">
 
-<h3 align="center">Indie Blueprint Save</h3>
+<h3 align="center">Vaul</h3>
 
   <p align="center">
-  This save system provides a convenient way to manage save files in your Godot project. It leverages the `SavedGame` resource, which can be extended for your specific game data
+  This save system provides a convenient way to manage save files in your Godot project. It leverages the `VaultSavedGame` resource, which can be extended for your specific game data
 	<br />
 	·
-	<a href="https://github.com/ninetailsrabbit/indie-blueprint-save/issues/new?assignees=ninetailsrabbit&labels=%F0%9F%90%9B+bug&projects=&template=bug_report.md&title=">Report Bug</a>
+	<a href="https://github.com/sempitern0/vault/issues/new?assignees=sempitern0&labels=%F0%9F%90%9B+bug&projects=&template=bug_report.md&title=">Report Bug</a>
 	·
-	<a href="https://github.com/ninetailsrabbit/indie-blueprint-save/issues/new?assignees=ninetailsrabbit&labels=%E2%AD%90+feature&projects=&template=feature_request.md&title=">Request Features</a>
+	<a href="https://github.com/sempitern0/vault/issues/new?assignees=sempitern0&labels=%E2%AD%90+feature&projects=&template=feature_request.md&title=">Request Features</a>
   </p>
 </div>
 
@@ -17,33 +17,33 @@
 <br>
 
 - [📦 Installation](#-installation)
-- [SaveManager 💾](#savemanager-)
-  - [Signals](#signals)
-  - [Methods](#methods)
-- [SavedGame Resource](#savedgame-resource)
-  - [How to save](#how-to-save)
+- [VaultSaveManager 💾](#vaultsavemanager-)
+	- [Signals](#signals)
+	- [Methods](#methods)
+- [VaultSavedGame Resource](#vaultsavedgame-resource)
+	- [How to save](#how-to-save)
 
 # 📦 Installation
 
-1. [Download Latest Release](https://github.com/ninetailsrabbit/indie-blueprint-save/releases/latest)
-2. Unpack the `addons/indie-blueprint-save` folder into your `/addons` folder within the Godot project
+1. [Download Latest Release](https://github.com/sempitern0/vault/releases/latest)
+2. Unpack the `addons/vault` folder into your `/addons` folder within the Godot project
 3. Enable this addon within the Godot settings: `Project > Project Settings > Plugins`
 
 To better understand what branch to choose from for which Godot version, please refer to this table:
-|Godot Version|indie-blueprint-save Branch|indie-blueprint-save Version|
+|Godot Version|vault Branch|vault Version|
 |---|---|--|
 |[![GodotEngine](https://img.shields.io/badge/Godot_4.3.x_stable-blue?logo=godotengine&logoColor=white)](https://godotengine.org/)|`4.3`|`1.x`|
 |[![GodotEngine](https://img.shields.io/badge/Godot_4.4.x_stable-blue?logo=godotengine&logoColor=white)](https://godotengine.org/)|`main`|`1.x`|
 
-# SaveManager 💾
+# VaultSaveManager 💾
 
 - **Multiple Save File Support:** Load and manage multiple save files stored in the user's game directory.
-- **Customizable SavedGame Resource:** The SavedGame resource acts as a container for your game data and can be extended with your own logic.
-- **Simple Saving:** Easily save game data using the `write_savegame` method on a newly created SavedGame resource.
-- **Efficient Loading:** Load previously saved games using the SaveManager's functionality.
+- **Customizable VaultSavedGame Resource:** The VaultSavedGame resource acts as a container for your game data and can be extended with your own logic.
+- **Simple Saving:** Easily save game data using the `write_savegame` method on a newly created VaultSavedGame resource.
+- **Efficient Loading:** Load previously saved games using the VaultSaveManager's functionality.
 - **File format:** Use `.tres` format when detects that the current build is a debug build or `.res` if not.
 
-There are 2 operations that the `SaveManager` always does.
+There are 2 operations that the `VaultSaveManager` always does.
 
 - Load the save files when ready
 - Write the current save game when the game is closed.
@@ -65,9 +65,9 @@ func _notification(what: int) -> void:
 ## Signals
 
 ```swift
-created_savegame(saved_game: SavedGame)
-loaded_savegame(saved_game: SavedGame)
-removed_saved_game(saved_game: SavedGame)
+created_savegame(saved_game: VaultSavedGame)
+loaded_savegame(saved_game: VaultSavedGame)
+removed_saved_game(saved_game: VaultSavedGame)
 
 error_creating_savegame(filename: String, error: Error)
 error_loading_savegame(filename: String, error: Error)
@@ -77,27 +77,27 @@ error_removing_savegame(filename: String, error: Error)
 ## Methods
 
 ```swift
-// Dictionary<String, SavedGame>
+// Dictionary<String, VaultSavedGame>
 @export var list_of_saved_games: Dictionary = {}
-@export var current_saved_game: SavedGame
+@export var current_saved_game: VaultSavedGame
 
 
-func make_current(saved_game: SavedGame) -> void
+func make_current(saved_game: VaultSavedGame) -> void
 
 func create_new_save(filename: String, make_it_as_current: bool = false)
 
-func load_savegame(filename: String) -> SavedGame
+func load_savegame(filename: String) -> VaultSavedGame
 
 func remove(filename: String)
 
 func read_user_saved_games() -> Dictionary
 
-func saved_game_exists(saved_game: SavedGame) -> bool
+func saved_game_exists(saved_game: VaultSavedGame) -> bool
 
 func save_filename_exists(filename: String) -> bool
 ```
 
-# SavedGame Resource
+# VaultSavedGame Resource
 
 This is the Resource that represents a save game in your project. Here is where you add new properties to save, the advantage of using resources is that it supports most types as well as being able to nest other resources.
 
@@ -106,7 +106,7 @@ This is the Resource that represents a save game in your project. Here is where 
 **_The dates are automatically updated in each write_**
 
 ```swift
-class_name SavedGame extends Resource
+class_name VaultSavedGame extends Resource
 
 static var default_path: String = OS.get_user_data_dir()
 
@@ -132,7 +132,7 @@ func delete()
 Here's a simplified example of saving a game:
 
 ```swift
-var saved_game = SavedGame.new()
+var saved_game = VaultSavedGame.new()
 saved_game.write_savegame("my_game_save") // The filename needs to be provided only in the first creation
 
 // Updating content
