@@ -17,6 +17,7 @@ func save_file(saved_game: VaultSavedGame) -> bool:
 		push_error("VaultSaveStrategyJson: An error %s happened saving file %s" % [error_string(open_error), save_path()])
 		return false
 	
+	saved_game.data.core.extension = extension_on_save()
 	saved_game.update_timestamp()
 	file_access.store_string(JSON.stringify(saved_game.data))
 	file_access.close()

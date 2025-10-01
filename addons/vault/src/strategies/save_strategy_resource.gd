@@ -16,9 +16,11 @@ func load_file() -> VaultSavedGame:
 
 
 func save_file(saved_game: VaultSavedGame) -> bool:
+	saved_game.data.core.extension = extension_on_save()
+	
 	var save_game_resource: _VaultSavedGameResource = _VaultSavedGameResource.new(saved_game)
 	var error: Error = ResourceSaver.save(save_game_resource, save_path())
-	
+
 	if error != OK:
 		push_error("VaultSaveStrategyResource: An error happened trying to save the file %s with code %s" % [save_filename, error_string(error)])
 		return false

@@ -16,7 +16,7 @@ var data: Dictionary = {
 		"creation_date": "",
 		"last_timestamp" : "",
 		"last_datetime" : 0
-	},
+	}
 }
 
 

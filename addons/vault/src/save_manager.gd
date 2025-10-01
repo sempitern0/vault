@@ -21,8 +21,12 @@ func _notification(what: int) -> void:
 
 func _ready() -> void:
 	read_user_saved_games()
-	
-	
+
+
+func create_new_save(file_name: String, file_path: String = default_path) -> VaultSavedGame:
+	return VaultSavedGame.new(file_name, default_path)
+
+
 func make_current(saved_game: VaultSavedGame) -> void:
 	current_saved_game = saved_game
 
@@ -39,6 +43,8 @@ func save_game(saved_game: VaultSavedGame, save_mode: SaveModes = current_save_m
 			save_strategy = VaultSaveStrategyJson.new(file_path, file_name, _encrypted_key)
 	
 	save_strategy.save_file(saved_game)
+	read_user_saved_games()
+	
 
 
 func load_game(file_path: String, file_name: String, _encrypted_key: StringName = encrypted_key) -> VaultSavedGame:
